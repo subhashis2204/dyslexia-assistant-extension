@@ -96,11 +96,13 @@ function applyReadingPreferences(preferences) {
   }
 
   const summaryClass = "dyslexia-ai-summary";
-  document
-    .querySelectorAll(`.${summaryClass}`)
-    .forEach((summary) => summary.remove());
 
-  if (!preferences.summaryEnabled) return;
+  if (!preferences.summaryEnabled) {
+    document
+      .querySelectorAll(`.${summaryClass}`)
+      .forEach((summary) => (summary.style.display = "none"));
+    return;
+  }
 
   const summaryStyleId = "dyslexia-ai-summary-style";
   if (!document.getElementById(summaryStyleId)) {
@@ -144,7 +146,23 @@ function applyReadingPreferences(preferences) {
     )
       return;
 
-    const wrapper = document.createElement("div");
+    // Check if a summary card already exists for this paragraph
+    let wrapper = paragraph.nextElementSibling;
+    if (wrapper && wrapper.classList.contains(summaryClass)) {
+      wrapper.style.display = "block";
+      wrapper.style.setProperty(
+        "--dyslexia-summary-scale",
+        String(preferences.textScale / 100),
+      );
+      if (preferences.fontEnabled) {
+        wrapper.style.fontFamily = "'OpenDyslexic', Arial, sans-serif";
+      } else {
+        wrapper.style.fontFamily = "";
+      }
+      return; // Do not recreate or re-add listeners to existing summary box
+    }
+
+    wrapper = document.createElement("div");
     wrapper.className = summaryClass;
     wrapper.style.setProperty(
       "--dyslexia-summary-scale",
@@ -168,7 +186,6 @@ function applyReadingPreferences(preferences) {
 
     const details = wrapper.querySelector("details");
     const summaryText = wrapper.querySelector(".dyslexia-summary-text");
-    let loaded = false;
 
     // Prevent interactions inside the summary box from closing details
     summaryText.addEventListener("click", (e) => {
@@ -176,11 +193,19 @@ function applyReadingPreferences(preferences) {
     });
 
     details.addEventListener("toggle", async () => {
-      // If closing or already fetched once, retain state without re-calling API (saves tokens)
-      if (!details.open || loaded) return;
+      // If closing or already fetched once on this paragraph node, NEVER re-fetch
+      if (!details.open || paragraph.__dyslexiaSummaryCache) return;
 
-      loaded = true;
       summaryText.hidden = false;
+
+      // Check if cache already exists on paragraph object
+      if (paragraph.__dyslexiaSummaryCache) {
+        summaryText.replaceChildren(
+          paragraph.__dyslexiaSummaryCache.cloneNode(true),
+        );
+        return;
+      }
+
       summaryText.textContent = "Creating a simpler summary…";
 
       chrome.runtime.sendMessage(
@@ -280,10 +305,16 @@ function applyReadingPreferences(preferences) {
                 );
                 rewriteResult.textContent = rewrite;
                 rewriteButton.replaceWith(rewriteResult);
+
+                // Cache updated fragment with rewrite attached
+                paragraph.__dyslexiaSummaryCache = content.cloneNode(true);
               },
             );
           });
           content.appendChild(rewriteButton);
+
+          // Save generated DOM content in memory cache on paragraph
+          paragraph.__dyslexiaSummaryCache = content.cloneNode(true);
           summaryText.replaceChildren(content);
         },
       );
