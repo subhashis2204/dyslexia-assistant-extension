@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Dyslexia AI Assistant",
+    "version": "1.0",
+    "description": "Simplify and format highlighted webpage text for dyslexia using OpenAI.",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "storage"
+    ],
+    "host_permissions": [
+        "https://*.openai.azure.com/*"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "options_page": "options.html"
+}
