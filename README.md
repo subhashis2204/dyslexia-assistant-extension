@@ -1,5 +1,9 @@
 # Dyslexia AI Assistant ✦
 
+<p align="center">
+  <img src="./icons/icon128.png" alt="Dyslexia AI Assistant Icon" width="128" height="128">
+</p>
+
 An accessible Chrome Extension (Manifest V3) designed to improve web readability and visual comfort for readers with dyslexia. Built with vanilla JavaScript, customizable typography, background tints, an interactive reading ruler, and on-demand AI paragraph summaries & text rewriting powered by Azure OpenAI.
 
 ---
@@ -23,17 +27,13 @@ An accessible Chrome Extension (Manifest V3) designed to improve web readability
 1. Clone or download this repository to your local computer.
 2. Open Google Chrome and navigate to `chrome://extensions/`.
 3. Enable **Developer mode** using the toggle in the top-right corner.
-4. Click **Load unpacked** and select the root directory of this project.
+4. Click **Load unpacked** and select the extension folder containing `manifest.json`.
 
----
+### 2. Configure Azure OpenAI
 
-### 2. Configure Azure OpenAI Integration
-
-To enable AI Summaries and Grade Rewrites, you need an active Azure OpenAI deployment:
-
-1. Right-click the **Dyslexia AI Assistant** icon in your browser toolbar and select **Options** (or click the Options link in `chrome://extensions`).
-2. Enter your deployment credentials:
-   - **Endpoint URL**: `https://<your-resource-name>.openai.azure.com`
+1. Right-click the **Dyslexia AI Assistant** extension icon in your Chrome toolbar and select **Options** (or click details in `chrome://extensions/`).
+2. Enter your Azure OpenAI credentials:
+   - **Endpoint URL**: Your Azure resource endpoint (e.g., `https://<your-resource-name>.openai.azure.com`)
    - **Deployment Name**: Your Azure model deployment name (e.g., `gpt-4o-mini`)
    - **API Key**: Your secret Azure API key.
 3. Click **Save Settings**.
@@ -43,7 +43,7 @@ To enable AI Summaries and Grade Rewrites, you need an active Azure OpenAI deplo
 ## 🛠️ Usage
 
 1. **Popup Menu Controls**:
-   - Click the extension icon in the toolbar to open the control panel.
+   - Click the extension icon (<img src="icon16.png" width="16" height="16">) in the toolbar to open the control panel.
    - Toggle **OpenDyslexic font**, adjust **Text size**, or pick a **Background tint**.
    - Toggle **Reading ruler** to follow your mouse cursor.
    - Turn on **AI paragraph summaries**.
@@ -52,6 +52,16 @@ To enable AI Summaries and Grade Rewrites, you need an active Azure OpenAI deplo
    - When **AI paragraph summaries** are enabled, a **"✦ Get AI overview"** banner appears under qualifying paragraphs on any webpage.
    - Expand the card to generate bulleted key points and a list of **Helpful words**.
    - Click **"Rewrite for Grade X"** to replace complex phrasing with simplified sentences matched to your selected reading grade.
+
+---
+
+## 🎨 Asset Guidelines
+
+| Size        | Usage Context                                             | Asset Path    |
+| :---------- | :-------------------------------------------------------- | :------------ |
+| **16x16**   | Chrome Toolbar & Extension Menu Icon                      | `icon16.png`  |
+| **48x48**   | Chrome Extensions Management Page (`chrome://extensions`) | `icon48.png`  |
+| **128x128** | Chrome Web Store Listing & Installation Dialog            | `icon128.png` |
 
 ---
 
@@ -67,4 +77,4 @@ This extension requests minimal permissions required to function safely:
 
 ## 📄 License
 
-This project is open-source and available under the [MIT License](LICENSE).
+MIT License. Feel free to modify and distribute.
