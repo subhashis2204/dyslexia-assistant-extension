@@ -55,13 +55,16 @@ function applyReadingPreferences(preferences) {
   const fontRules = preferences.fontEnabled
     ? `font-family: 'OpenDyslexic', Arial, sans-serif !important; letter-spacing: ${preferences.letterSpacing}em !important; word-spacing: ${preferences.wordSpacing}em !important; line-height: 1.8 !important;`
     : "";
+  const fontImport = preferences.fontEnabled
+    ? "@import url('https://fonts.cdnfonts.com/css/opendyslexic');"
+    : "";
   const tint = tintColors[preferences.pageTint] || tintColors.none;
 
   styleTag.textContent = `
-    ${preferences.fontEnabled ? "@import url('https://fonts.cdnfonts.com/css/opendyslexic');" : ""}
+    ${fontImport}
     html { background-color: ${tint} !important; }
     body { background-color: ${tint} !important; font-size: ${preferences.textScale}% !important; }
-    body p, body span, body h1, body h2, body h3, body h4, body h5, body h6, body li, body a, body label, body input, body textarea, body button { ${fontRules} }
+    ${preferences.fontEnabled ? `html, body, body * { ${fontRules} }` : ""}
   `;
 
   // Page Tint Overlay
