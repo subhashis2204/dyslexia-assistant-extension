@@ -48,7 +48,7 @@ function applyReadingPreferences(preferences) {
     body p, body span, body h1, body h2, body h3, body h4, body h5, body h6, body li, body a, body label, body input, body textarea, body button { ${fontRules} }
   `;
 
-  // Overlay for full-page background
+  // Page Tint Overlay
   const tintOverlayId = "dyslexia-reading-tint-overlay";
   const existingTintOverlay = document.getElementById(tintOverlayId);
   const overlayColors = {
@@ -66,7 +66,7 @@ function applyReadingPreferences(preferences) {
     if (!existingTintOverlay) document.documentElement.appendChild(tintOverlay);
   }
 
-  // Reading Ruler logic
+  // Reading Ruler Logic
   const rulerId = "dyslexia-reading-ruler";
   const existingRuler = document.getElementById(rulerId);
   if (preferences.rulerEnabled && !existingRuler) {
@@ -109,28 +109,34 @@ function applyReadingPreferences(preferences) {
     const summaryStyle = document.createElement("style");
     summaryStyle.id = summaryStyleId;
     summaryStyle.textContent = `
-      .${summaryClass} { margin: 12px 0 20px; }
+      .${summaryClass} { 
+        margin: 12px 0 20px; 
+      }
       .${summaryClass} details { overflow: hidden; border: 1px solid #cbd5e1; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); }
-      .${summaryClass} summary { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; color: #1e40af; cursor: pointer; font-size: calc(13px * var(--dyslexia-summary-scale)); font-weight: 700; list-style: none; user-select: none; background: #f8fafc; }
+      .${summaryClass} summary { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; color: #1e40af; cursor: pointer; font-size: 1em; font-weight: 700; list-style: none; user-select: none; background: #f8fafc; font-family: inherit !important; letter-spacing: inherit !important; word-spacing: inherit !important; }
       .${summaryClass} summary::-webkit-details-marker { display: none; }
       .${summaryClass} summary::before { content: "✦"; margin-right: 8px; color: #2563eb; }
-      .${summaryClass} .dyslexia-summary-title { display: flex; align-items: center; flex-grow: 1; }
-      .${summaryClass} .dyslexia-minimize-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: #e2e8f0; color: #475569; font-weight: 800; font-size: 14px; line-height: 1; margin-left: 8px; transition: background 0.15s ease; }
+      .${summaryClass} .dyslexia-summary-title { display: flex; align-items: center; flex-grow: 1; font-family: inherit !important; font-size: inherit; }
+      .${summaryClass} .dyslexia-minimize-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: #e2e8f0; color: #475569; font-weight: 800; font-size: 0.9em; line-height: 1; margin-left: 8px; transition: background 0.15s ease; }
       .${summaryClass} details[open] .dyslexia-minimize-btn::after { content: "−"; }
       .${summaryClass} details:not([open]) .dyslexia-minimize-btn::after { content: "+"; }
       .${summaryClass} summary:hover .dyslexia-minimize-btn { background: #cbd5e1; color: #0f172a; }
-      .${summaryClass} .dyslexia-summary-text { padding: 12px 14px 14px; color: #334155; font-size: calc(13px * var(--dyslexia-summary-scale)); line-height: 1.6; border-top: 1px solid #f1f5f9; }
+      .${summaryClass} .dyslexia-summary-text { padding: 12px 14px 14px; color: #334155; font-size: 1em; line-height: 1.6; border-top: 1px solid #f1f5f9; font-family: inherit !important; }
       .${summaryClass} .dyslexia-summary-text[hidden] { display: none; }
-      .${summaryClass} .dyslexia-summary-list { margin: 6px 0 10px; padding-left: 20px; line-height: 1.6; }
+      .${summaryClass} .dyslexia-summary-list { margin: 6px 0 10px; padding-left: 20px; line-height: 1.6; font-size: 1em; font-family: inherit !important; }
+      .${summaryClass} .dyslexia-summary-list li { font-size: 1em; font-family: inherit !important; }
       .${summaryClass} .dyslexia-summary-list li + li { margin-top: 6px; }
-      .${summaryClass} .dyslexia-overview-words { margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; }
-      .${summaryClass} .dyslexia-overview-words-title { display: block; margin-bottom: 6px; color: #1e40af; font-size: calc(11px * var(--dyslexia-summary-scale)); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-      .${summaryClass} .dyslexia-word { display: inline; font-size: calc(12px * var(--dyslexia-summary-scale)); line-height: 1.5; }
+      
+      /* Helpful Words Section - Uses Relative Scaling (em) */
+      .${summaryClass} .dyslexia-overview-words { margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; font-size: 1em; }
+      .${summaryClass} .dyslexia-overview-words-title { display: block; margin-bottom: 6px; color: #1e40af; font-size: 0.85em; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em !important; font-family: inherit !important; }
+      .${summaryClass} .dyslexia-word { display: inline; font-size: 0.95em; line-height: 1.5; font-family: inherit !important; }
       .${summaryClass} .dyslexia-word + .dyslexia-word::before { content: " • "; color: #94a3b8; }
-      .${summaryClass} .dyslexia-word strong { color: #0f172a; }
-      .${summaryClass} .dyslexia-rewrite-button { width: 100%; margin-top: 12px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; color: #1e40af; cursor: pointer; font: inherit; font-size: calc(12px * var(--dyslexia-summary-scale)); font-weight: 700; background: #f8fafc; transition: background 0.15s ease; }
+      .${summaryClass} .dyslexia-word strong { color: #0f172a; font-family: inherit !important; font-size: inherit; }
+      
+      .${summaryClass} .dyslexia-rewrite-button { width: 100%; margin-top: 12px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; color: #1e40af; cursor: pointer; font-family: inherit !important; font-size: 0.9em; font-weight: 700; background: #f8fafc; transition: background 0.15s ease; }
       .${summaryClass} .dyslexia-rewrite-button:hover { background: #eff6ff; border-color: #93c5fd; }
-      .${summaryClass} .dyslexia-rewrite-result { margin: 12px 0 0; padding: 12px 14px; border-left: 3px solid #2563eb; color: #1e293b; line-height: 1.8; background: #f8fafc; border-radius: 0 8px 8px 0; }
+      .${summaryClass} .dyslexia-rewrite-result { margin: 12px 0 0; padding: 12px 14px; border-left: 3px solid #2563eb; color: #1e293b; font-size: 1em; line-height: 1.8; background: #f8fafc; border-radius: 0 8px 8px 0; font-family: inherit !important; }
     `;
     document.head.appendChild(summaryStyle);
   }
@@ -146,33 +152,27 @@ function applyReadingPreferences(preferences) {
     )
       return;
 
-    // Check if a summary card already exists for this paragraph
+    // Retrieve computed DOM styles directly from parent paragraph
+    const computed = window.getComputedStyle(paragraph);
+
     let wrapper = paragraph.nextElementSibling;
     if (wrapper && wrapper.classList.contains(summaryClass)) {
       wrapper.style.display = "block";
-      wrapper.style.setProperty(
-        "--dyslexia-summary-scale",
-        String(preferences.textScale / 100),
-      );
-      if (preferences.fontEnabled) {
-        wrapper.style.fontFamily = "'OpenDyslexic', Arial, sans-serif";
-      } else {
-        wrapper.style.fontFamily = "";
-      }
-      return; // Do not recreate or re-add listeners to existing summary box
+      wrapper.style.fontFamily = computed.fontFamily;
+      wrapper.style.fontSize = computed.fontSize;
+      wrapper.style.letterSpacing = computed.letterSpacing;
+      wrapper.style.wordSpacing = computed.wordSpacing;
+      return;
     }
 
     wrapper = document.createElement("div");
     wrapper.className = summaryClass;
-    wrapper.style.setProperty(
-      "--dyslexia-summary-scale",
-      String(preferences.textScale / 100),
-    );
-    if (preferences.fontEnabled) {
-      wrapper.style.fontFamily = "'OpenDyslexic', Arial, sans-serif";
-      wrapper.style.letterSpacing = "0.05em";
-      wrapper.style.wordSpacing = "0.1em";
-    }
+
+    // Apply exact typography properties onto wrapper
+    wrapper.style.fontFamily = computed.fontFamily;
+    wrapper.style.fontSize = computed.fontSize;
+    wrapper.style.letterSpacing = computed.letterSpacing;
+    wrapper.style.wordSpacing = computed.wordSpacing;
 
     wrapper.innerHTML = `
       <details>
@@ -187,18 +187,15 @@ function applyReadingPreferences(preferences) {
     const details = wrapper.querySelector("details");
     const summaryText = wrapper.querySelector(".dyslexia-summary-text");
 
-    // Prevent interactions inside the summary box from closing details
     summaryText.addEventListener("click", (e) => {
       e.stopPropagation();
     });
 
     details.addEventListener("toggle", async () => {
-      // If closing or already fetched once on this paragraph node, NEVER re-fetch
       if (!details.open || paragraph.__dyslexiaSummaryCache) return;
 
       summaryText.hidden = false;
 
-      // Check if cache already exists on paragraph object
       if (paragraph.__dyslexiaSummaryCache) {
         summaryText.replaceChildren(
           paragraph.__dyslexiaSummaryCache.cloneNode(true),
@@ -288,32 +285,15 @@ function applyReadingPreferences(preferences) {
                   "Unable to rewrite this passage.";
                 const rewriteResult = document.createElement("div");
                 rewriteResult.className = "dyslexia-rewrite-result";
-                rewriteResult.style.setProperty(
-                  "letter-spacing",
-                  "0.05em",
-                  "important",
-                );
-                rewriteResult.style.setProperty(
-                  "word-spacing",
-                  "0.1em",
-                  "important",
-                );
-                rewriteResult.style.setProperty(
-                  "line-height",
-                  "1.8",
-                  "important",
-                );
                 rewriteResult.textContent = rewrite;
                 rewriteButton.replaceWith(rewriteResult);
 
-                // Cache updated fragment with rewrite attached
                 paragraph.__dyslexiaSummaryCache = content.cloneNode(true);
               },
             );
           });
           content.appendChild(rewriteButton);
 
-          // Save generated DOM content in memory cache on paragraph
           paragraph.__dyslexiaSummaryCache = content.cloneNode(true);
           summaryText.replaceChildren(content);
         },
