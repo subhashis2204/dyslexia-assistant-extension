@@ -1,7 +1,5 @@
-# Dyslexia AI Assistant ✦
-
 <p align="center">
-  <img src="./icons/icon128.png" alt="Dyslexia AI Assistant Icon" width="128" height="128">
+  <img src="./icons/gitBanner.png" alt="Dyslexia AI Assistant Icon" width="100%" >
 </p>
 
 An accessible Chrome Extension (Manifest V3) designed to improve web readability and visual comfort for readers with dyslexia. Built with vanilla JavaScript, customizable typography, background tints, an interactive reading ruler, and on-demand AI paragraph summaries & text rewriting powered by Azure OpenAI.

@@ -373,10 +373,12 @@ rulerToggle.addEventListener("change", saveAndApply);
 summaryToggle.addEventListener("change", saveAndApply);
 pageTint.addEventListener("change", saveAndApply);
 readingGrade.addEventListener("change", saveAndApply);
+
 textSize.addEventListener("input", () => {
   updateTextSizeLabel();
   saveAndApply();
 });
+
 letterSpacing.addEventListener("input", () => {
   updateLetterSpacingLabel();
   saveAndApply();
