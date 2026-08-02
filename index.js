@@ -49,6 +49,23 @@ function readPreferences() {
   };
 }
 
+function createAndApplyTint(selectedTintColor, tintColors) {
+  let existingTintOverlay = document.querySelector("#page-tint-overlay");
+  existingTintOverlay?.remove();
+
+  const pageTint = tintColors.selectedTintColor || tintColors.none;
+  let pageTintOverlay = document.createElement("div");
+  pageTintOverlay.id = "page-tint-overlay";
+  pageTintOverlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    z-index: 9999999;
+    pointer-events: none;
+    background: ${pageTint}
+  `;
+  document.documentElement.appendChild(pageTintOverlay);
+}
+
 function applyReadingPreferences(preferences) {
   const tintColors = {
     none: "transparent",
@@ -77,8 +94,10 @@ function applyReadingPreferences(preferences) {
 
     styleTag.textContent = fontRules;
   } else {
-    styleTag.textContent = "";
+    styleTag.remove();
   }
+
+  createAndApplyTint(preferences.pageTint, tintColors);
 }
 function saveAndApply() {
   const preferences = readPreferences();

@@ -3,6 +3,10 @@ const rulerToggle = document.getElementById("rulerToggle");
 const summaryToggle = document.getElementById("summaryToggle");
 const textSize = document.getElementById("textSize");
 const textSizeValue = document.getElementById("textSizeValue");
+const letterSpacing = document.getElementById("letterSpacing");
+const letterSpacingValue = document.getElementById("letterSpacingValue");
+const wordSpacing = document.getElementById("wordSpacing");
+const wordSpacingValue = document.getElementById("wordSpacingValue");
 const pageTint = document.getElementById("pageTint");
 const readingGrade = document.getElementById("readingGrade");
 
@@ -13,11 +17,23 @@ const defaults = {
   textScale: 100,
   pageTint: "none",
   readingGrade: "5",
+  letterSpacing: 0.05,
+  wordSpacing: 0.1,
 };
 
 function updateTextSizeLabel() {
   textSizeValue.value = `${textSize.value}%`;
   textSizeValue.textContent = `${textSize.value}%`;
+}
+
+function updateLetterSpacingLabel() {
+  letterSpacingValue.value = `${letterSpacing.value}em`;
+  letterSpacingValue.textContent = `${letterSpacing.value}em`;
+}
+
+function updateWordSpacingLabel() {
+  wordSpacingValue.value = `${wordSpacing.value}em`;
+  wordSpacingValue.textContent = `${wordSpacing.value}em`;
 }
 
 function applyReadingPreferences(preferences) {
@@ -37,7 +53,7 @@ function applyReadingPreferences(preferences) {
   }
 
   const fontRules = preferences.fontEnabled
-    ? "font-family: 'OpenDyslexic', Arial, sans-serif !important; letter-spacing: 0.05em !important; word-spacing: 0.1em !important; line-height: 1.8 !important;"
+    ? `font-family: 'OpenDyslexic', Arial, sans-serif !important; letter-spacing: ${preferences.letterSpacing}em !important; word-spacing: ${preferences.wordSpacing}em !important; line-height: 1.8 !important;`
     : "";
   const tint = tintColors[preferences.pageTint] || tintColors.none;
 
@@ -323,6 +339,8 @@ function readPreferences() {
     rulerEnabled: rulerToggle.checked,
     summaryEnabled: summaryToggle.checked,
     textScale: Number(textSize.value),
+    letterSpacing: Number(letterSpacing.value),
+    wordSpacing: Number(wordSpacing.value),
     pageTint: pageTint.value,
     readingGrade: readingGrade.value,
   };
@@ -342,6 +360,8 @@ chrome.storage.local.get(defaults, (preferences) => {
   pageTint.value = preferences.pageTint;
   readingGrade.value = preferences.readingGrade;
   updateTextSizeLabel();
+  updateLetterSpacingLabel();
+  updateWordSpacingLabel();
   applyToActiveTab(preferences);
 });
 
@@ -352,6 +372,14 @@ pageTint.addEventListener("change", saveAndApply);
 readingGrade.addEventListener("change", saveAndApply);
 textSize.addEventListener("input", () => {
   updateTextSizeLabel();
+  saveAndApply();
+});
+letterSpacing.addEventListener("input", () => {
+  updateLetterSpacingLabel();
+  saveAndApply();
+});
+wordSpacing.addEventListener("input", () => {
+  updateWordSpacingLabel();
   saveAndApply();
 });
 
